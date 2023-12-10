@@ -145,16 +145,16 @@ void displayAlignedList(t_d_list list) {
 //Creation de grande liste
 
 int* CreateTab(int n) {
-    uint32_t x = (uint32_t)(pow(2, n) - 1);
-    int *tab = (int*)malloc(x * sizeof(int));
-    if (tab == NULL) {
+    uint32_t x = (uint32_t)(pow(2, n) - 1);// On initialise une variable qui correspond au nombre de valeurs qui seront présentes dans le tableau
+    int *tab = (int*)malloc(x * sizeof(int));// On initialise un tableau et on alloue la memoire pour stocker x valeurs
+    if (tab == NULL) {//Si l'allocation n'a pas pu être effectué, on informe l'utilisateur avec un printf et on sort de la fonction
         fprintf(stderr, "Erreur d'allocation de mémoire\n");
         exit(EXIT_FAILURE);
     }
-    for (uint32_t i = 0; i < x; i++) {
-        tab[i] = 0;
+    for (uint32_t i = 0; i < x; i++) {//On crée une boucle qui parcours les éléments du tableau
+        tab[i] = 0;// On initialise tous les élements a 0
     }
-    for (uint32_t i = 1; i < n; i++) {
+    for (uint32_t i = 1; i < n; i++) {//On crée une boucle qui incrémente de 1 une case sur 2^i valeurs
         uint32_t z = (uint32_t)(pow(2, i));
         for (uint32_t j = z - 1; j < x; j += z) {
             tab[j]++;
@@ -164,17 +164,17 @@ int* CreateTab(int n) {
 }
 
 t_d_list CreateListNvalue(int n) {
-    int *tab = CreateTab(n);
-    uint32_t x = (uint32_t)(pow(2, n) - 1);
-    t_d_list l = CreateEmptyList(n);
-    for (int i = n - 1; i >= 0; i--) {
+    int *tab = CreateTab(n);//On crée un tableau pour nous aider a placer nos cellules aux bons endroits
+    uint32_t x = (uint32_t)(pow(2, n) - 1);//On initialise une variable qui nous donnera le nombre de cellules
+    t_d_list l = CreateEmptyList(n);//On crée une liste vide avec n niveaux
+    for (int i = n - 1; i >= 0; i--) {//On effectue une boucle pour insérer toutes les cellules aux bon endroits
         for (uint32_t j = 0; j < x; j++) {
-            if (tab[j] == i) {
-                insertCell(&l, j + 1, i + 1);
+            if (tab[j] == i) {//Si le niveau actuel est égal a la valeur de l'indice j du tableau
+                insertCell(&l, j + 1, i + 1);//On insert une cellule en donnant l'indice j+1 et le niveau n+1 en paramètres
             }
         }
     }
-    return l;
+    return l;//On retourne ensuite la liste l
 }
 
 /*----------------------------------------------------------------------------*/
