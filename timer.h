@@ -45,4 +45,6 @@ void displayTime();
  */
 char *getTimeAsString();
 
+void CalculTimer();
+
 #endif //UNTITLED1_TIMER_H

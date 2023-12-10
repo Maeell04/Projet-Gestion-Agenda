@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <malloc.h>
 #include "timer.h"
+#include "cell.h"
+#include "list.h"
 
 // start the timer
 void startTimer()
@@ -42,4 +44,45 @@ char *getTimeAsString()
 
     // return the buffer
     return buffer;
+}
+
+void CalculTimer() {
+    int tmp = 0;
+    //Paramètre de notre recherche
+    int nbRecherche = 100000;
+    int nvMax = 17;
+
+    t_d_list l;
+    FILE *log_file = fopen("log.txt", "w");
+    char format[] = "%d\t%s\t%s\n";
+    char *time_lvl0;
+    char *time_all_levels;
+
+    for (int i = 4; i < nvMax; i++) {
+        l = CreateListNvalue(i);
+
+        // Mesure du temps pour la recherche avec le niveau 0
+        startTimer();
+        for (int k = 0; k < nbRecherche; k++) {
+            int rand_nb = rand() % (1 << i);
+            tmp = searchValue(l, rand_nb);
+        }
+        stopTimer();
+        time_lvl0 = getTimeAsString();
+
+        // Mesure du temps pour la recherche sur tous les niveaux
+        startTimer();
+        for (int k = 0; k < nbRecherche; k++) {
+            int rand_nb = rand() % (1 << i);
+            tmp = Dicotomie_searchValue(l, rand_nb, l.heads[l.max_level - 1], l.max_level - 1);
+        }
+        stopTimer();
+        time_all_levels = getTimeAsString();
+
+        fprintf(log_file, format, i, time_lvl0, time_all_levels);
+    }
+
+    fclose(log_file);
+
+    return;
 }
