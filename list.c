@@ -49,45 +49,45 @@ int searchValue(t_d_list list,int val){
 
 int Dicotomie_searchValue(t_d_list l, int val, t_d_cell* cell, int lev){
     startTimer();
-    while(cell!=NULL){
-        if(cell->value==val){
+    while(cell!=NULL){ // Tant que notre cellule est differente de NULL
+        if(cell->value==val){//Si la valeur est trouvée 
             //printf("La valeur %d a ete trouvee\n", val);
-            return 1;
+            return 1;// Nous retournons 1
         }
-        if(cell->value < val) {
-            if(cell->nexts[lev]==NULL){
-                if(lev==0){
+        if(cell->value < val) {//Si la valeur de notre cellule est inférieure a la valeur recherchée
+            if(cell->nexts[lev]==NULL){// si la valeur de notre cellule est inferieur a la valeur recherchée et la cellule suivante est égale a NULL
+                if(lev==0){// Si nous sommes au premier niveau, cela veut dire que toute la liste est parcourue et la valeur n'a pas été trouvée
                     //printf("La valeur %d n'a pas ete trouvee", val);
-                    return 0;
-                }else{
-                    return Dicotomie_searchValue(l, val, cell->nexts[lev-1],lev-1);
+                    return 0;// on retourne donc 0
+                }else{//Sinon
+                    return Dicotomie_searchValue(l, val, cell->nexts[lev-1],lev-1);//On fait un appel reccursive a partir de la cellule suivante pour le niveau inférieur
                 }
             }else{
-                if(cell->nexts[lev]->value>val){
-                    if(lev==0){
+                if(cell->nexts[lev]->value>val){//Sinon si la valeur de la cellule suivante est superieure a la valeur recherchée
+                    if(lev==0){// Si nous somme au premier niveau, cela veut dire que notre valeur n'est pas présente dans la liste
                         //printf("La valeur %d n'a pas ete trouvee", val);
-                        return 0;
+                        return 0;// On retourne donc 0
                     }else{
-                        return Dicotomie_searchValue(l, val, cell->nexts[lev-1], lev-1);
+                        return Dicotomie_searchValue(l, val, cell->nexts[lev-1], lev-1);//Sinon on fait un appel reccursive a partir de la cellule suivante pour le niveau inferieur
                     }
                 }
             }
         }
-        if (cell->value > val) {
+        if (cell->value > val) { //Si la valeur de notre cellule est supérieur a la valeur recherchée
             if(lev==0){
                 //printf("La valeur %d n'a pas ete trouvee", val);
-                return 0;
+                return 0;// on retourne 0 si nous sommes au premier niveau car cela veut dire que notre valeur n'est pas présente dans la liste 
             }
-            lev--;
-            return Dicotomie_searchValue(l, val, l.heads[lev], lev);
+            lev--; // on decrémente la variable du correspondant au niveau
+            return Dicotomie_searchValue(l, val, l.heads[lev], lev);// On fait un appel réccursive a partir de la tete de la liste du niveau inférieur
         }
-        cell = cell->nexts[lev];
+        cell = cell->nexts[lev];// On passe a la cellule suivante 
     }
-    if(lev==0){
+    if(lev==0){// Si la cellule est égal a nul et est au niveau 0
         //printf("La valeur %d n'a pas ete trouvee", val);
-        return 0;
+        return 0;// La liste entière a été parcourue et la valeur n'a pas été trouvée
     }
-    return Dicotomie_searchValue(l, val, l.heads[lev-1], lev-1);
+    return Dicotomie_searchValue(l, val, l.heads[lev-1], lev-1); // Sinon on fait un appel reccursive a partir de la tête de la liste du niveau inférieur
 }
 
 /*----------------------------------------------------------------------------*/
